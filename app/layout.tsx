@@ -19,7 +19,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`${MonaSans.variable}  antialiased`}>{children}</body>
+      <body className={`${MonaSans.variable}  antialiased pattern`}>
+        {children}
+      </body>
     </html>
   );
 }
