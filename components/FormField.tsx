@@ -7,15 +7,26 @@ import {
   FormMessage,
 } from "./ui/form";
 import { Input } from "./ui/input";
+import { Control, Controller , FieldValues, Path} from "react-hook-form";
 
-const FormField = () => {
+interface formFieldProps<T extends FieldValues>{
+  control:Control<T>;
+  name:Path<T>;
+  label:string;
+  placeholder?:string;
+  type?:"text"|"email"|"password"|"file"
+
+
+}
+ 
+const FormField = ({control , name  ,label , placeholder , type="text"}:formFieldProps<T>) => {
   return (
-    <FormField
-      control={form.control}
-      name="username"
+    <Controller
+      control={control}
+      name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Username</FormLabel>
+          <FormLabel className="label">Username</FormLabel>
           <FormControl>
             <Input placeholder="shadcn" {...field} />
           </FormControl>
