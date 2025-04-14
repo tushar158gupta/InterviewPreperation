@@ -9,6 +9,8 @@ import { Form } from "@/components/ui/form";
 import Image from "next/image";
 import Link from "next/link";
 import { toast } from "sonner";
+import FormField from "./FormField";
+import { useRouter } from "next/navigation";
 
 const authformSchema = (type: FormType) => {
   return z.object({
@@ -21,6 +23,8 @@ const authformSchema = (type: FormType) => {
 
 const AuthForm = ({ type }: { type: FormType }) => {
   const formSchema = authformSchema(type);
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -35,9 +39,13 @@ const AuthForm = ({ type }: { type: FormType }) => {
     // console.log(values);
     try {
       if (type === "sign-up") {
+        toast.success("Account created successfully");
+        router.push("/sign-in");
         console.log("SIGN UP ", values);
       } else {
         console.log("SIGN IN ", values);
+        router.push("/");
+        toast.success("Login successfully");
       }
     } catch (error) {
       console.log(error);
@@ -61,9 +69,29 @@ const AuthForm = ({ type }: { type: FormType }) => {
             onSubmit={form.handleSubmit(onSubmit)}
             className=" w-full space-y-8 mt-4 form"
           >
-            {!issingin && <p>name</p>}
-            <p>email</p>
-            <p>password</p>
+            {!issingin && (
+              <FormField
+                type="text"
+                name="name"
+                label="Name"
+                control={form.control}
+                placeholder="Your Name"
+              />
+            )}
+            <FormField
+              type="email"
+              name="email"
+              label="Email"
+              control={form.control}
+              placeholder="Your Email"
+            />
+            <FormField
+              name="password"
+              type="password"
+              label="Password"
+              control={form.control}
+              placeholder="Your Password"
+            />
 
             <Button className="btn" type="submit">
               {issingin ? "Login" : "Create an account"}
